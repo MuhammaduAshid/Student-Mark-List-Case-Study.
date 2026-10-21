@@ -1,0 +1,130 @@
+
+#include <iostream>
+#include <string>
+#include <stack>
+#include <queue>
+using namespace std;
+
+struct Student {
+    int rollNo;
+    string name;
+    float mark;
+};
+
+void displayStudent(Student s) {
+    cout << "Roll No: " << s.rollNo
+         << ", Name: " << s.name
+         << ", Mark: " << s.mark
+         << ", Result: "
+         << (s.mark >= 35 ? "PASS" : "FAIL")
+         << endl;
+}
+
+Student inputStudent() {
+    Student s;
+
+    cout << "Enter Roll Number: ";
+    cin >> s.rollNo;
+
+    cout << "Enter Student Name: ";
+    getline(cin >> ws, s.name);
+
+    cout << "Enter Mark (0-100): ";
+    cin >> s.mark;
+
+    if (s.mark < 0 || s.mark > 100) {
+        cout << "Invalid mark! Setting mark to 0.\n";
+        s.mark = 0;
+    }
+
+    return s;
+}
+
+int main() {
+    stack<Student> st;
+    queue<Student> q;
+    int choice;
+
+    do {
+        cout << "\n--- STUDENT MARK LIST ---\n";
+        cout << "1. Push Student to Stack\n";
+        cout << "2. Pop Student from Stack\n";
+        cout << "3. Display Stack\n";
+        cout << "4. Add Student to Queue\n";
+        cout << "5. Remove Student from Queue\n";
+        cout << "6. Display Queue\n";
+        cout << "7. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: {
+            Student s = inputStudent();
+            st.push(s);
+            cout << "Student added to Stack.\n";
+            break;
+        }
+
+        case 2:
+            if (!st.empty()) {
+                cout << "Removed Student:\n";
+                displayStudent(st.top());
+                st.pop();
+            } else {
+                cout << "Stack is empty!\n";
+            }
+            break;
+
+        case 3:
+            if (st.empty()) {
+                cout << "Stack is empty!\n";
+            } else {
+                stack<Student> temp = st;
+                while (!temp.empty()) {
+                    displayStudent(temp.top());
+                    temp.pop();
+                }
+            }
+            break;
+
+        case 4: {
+            Student s = inputStudent();
+            q.push(s);
+            cout << "Student added to Queue.\n";
+            break;
+        }
+
+        case 5:
+            if (!q.empty()) {
+                cout << "Processed Student:\n";
+                displayStudent(q.front());
+                q.pop();
+            } else {
+                cout << "Queue is empty!\n";
+            }
+            break;
+
+        case 6:
+            if (q.empty()) {
+                cout << "Queue is empty!\n";
+            } else {
+                queue<Student> temp = q;
+                while (!temp.empty()) {
+                    displayStudent(temp.front());
+                    temp.pop();
+                }
+            }
+            break;
+
+        case 7:
+            cout << "Program terminated.\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 7);
+
+    return 0;
+}
